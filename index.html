@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Ninja</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css">
+        <script type="text/javascript" src="chart-3.js"></script>
+        <script type="text/javascript" src="chart-4-1.js"></script>
+        <script type="text/javascript" src="chart-4-15.js"></script>
+    </head>
+    <body>
+        <h1>JavaScript Ninja</h1>
+        <nav>
+            <input type="button" value="Asynchronous simple test" onClick="asynchronousSimpleTest()">
+            <input type="button" value="Call functions" onClick="callFunctions()">
+            <input type="button" value="Apply & Call" onClick="applyCall()">
+            <input type="button" value="For each" onClick="forEach()">
+            <input type="button" value="Anonymous function" onClick="anonymousFunction()">
+            <input type="button" value="Add method" onClick="overload()">
+            <input type="button" value="Clear" id="clear"/>
+        </nav>
+        <h2 id="testTitle"></h2>
+        <ul id="results"></ul>
+        <script>
+            // test abd assert
+            (function() {
+                var queue = [], paused = false, results = document.getElementById("results");
+                this.test = function(name, fn) {
+                    queue.push(function() {
+                        results = document.getElementById("results");
+                        results = assert(true, name).appendChild(
+                                document.createElement("ul"));
+                        fn();
+                    });
+                    runTest();
+                };
+                this.pause = function() {
+                    paused = true;
+                };
+                this.resume = function() {
+                    paused = false;
+                    setTimeout(runTest, 1);
+                };
+                function runTest() {
+                    if (!paused && queue.length) {
+                        queue.shift()();
+                        if (!paused) {
+                            resume();
+                        }
+                    }
+                }
+                this.assert = function assert(value, desc) {
+                    var li = document.createElement("li");
+                    li.className = value ? "pass" : "fail";
+                    li.appendChild(document.createTextNode(desc));
+                    results.appendChild(li);
+                    if (!value) {
+                        li.parentNode.parentNode.className = "fail";
+                    }
+                    return li;
+                };
+                var clear = document.getElementById("clear");
+                clear.onclick = function() {
+                    var results = document.getElementById("results");
+                    results.innerHTML = "";
+                };
+            })();
+        </script>  
+    </body>
+</html>

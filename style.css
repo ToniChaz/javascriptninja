@@ -1,0 +1,8 @@
+@charset "utf-8";
+
+#results li.pass {
+    color: green;
+}
+#results li.fail {
+    color: red;
+}
