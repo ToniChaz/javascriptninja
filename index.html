@@ -33,7 +33,7 @@
                 this.test = function(name, fn) {
                     queue.push(function() {
                         results = document.getElementById("results");
-                        results = assert(true, name).appendChild(
+                        results = this.assert(true, name).appendChild(
                                 document.createElement("ul"));
                         fn();
                     });
@@ -50,7 +50,7 @@
                     if (!paused && queue.length) {
                         queue.shift()();
                         if (!paused) {
-                            resume();
+                            this.resume();
                         }
                     }
                 }
@@ -66,8 +66,8 @@
                 };
                 var clear = document.getElementById("clear");
                 clear.onclick = function() {
-                    var results = document.getElementById("results");
-                    results.innerHTML = "";
+                    console.log('reload');
+                    window.location.reload();
                 };
             })();
         </script>  

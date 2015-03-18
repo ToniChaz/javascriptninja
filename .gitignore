@@ -7,3 +7,8 @@
 ## Ignore Linux mind .directory archive
 #######################################
 .directory
+
+########################################
+## Ignore Linux mind .directory archive
+#######################################
+.c9/
