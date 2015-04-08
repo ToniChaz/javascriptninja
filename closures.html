@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Closures</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+              font-family: Helvetica, Arial, sans-serif;
+              font-size: 12px;
+            }
+
+            h1 {
+              font-size: 1.5em;
+            }
+
+            h2 {
+              font-size: 1.2em;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>JavaScript Closures</h1>
+        <nav>
+            <input type="button" value="Index" onClick="document.location='index.html';return false;" />
+            <input type="button" value="12PX" id="size-12"/>
+            <input type="button" value="14PX" id="size-14"/>
+            <input type="button" value="16PX" id="size-16"/>
+        </nav>        
+        <p id="help">Helpful notes will appear here</p>
+        <p>E-mail: <input type="text" id="email" name="email"></p>
+        <p>Name: <input type="text" id="name" name="name"></p>
+        <p>Age: <input type="text" id="age" name="age"></p>
+        <div id="myDiv"></div>
+        <div id="myAntDiv"></div>
+        <script>
+
+            function init() {
+              var name = "Mozilla"; // name is a local variable created by init
+              function displayName() { // displayName() is the inner function, a closure
+                console.log(name); // use variable declared in the parent function    
+              }
+              displayName();    
+            }
+            init();
+            
+            //------------------------------------------------------------------------------
+            
+            function makeSizer(size) {
+              return function() {
+                document.body.style.fontSize = size + 'px';
+              };
+            }
+
+            var size12 = makeSizer(12);
+            var size14 = makeSizer(14);
+            var size16 = makeSizer(16);
+
+            document.getElementById('size-12').onclick = size12;
+            document.getElementById('size-14').onclick = size14;
+            document.getElementById('size-16').onclick = size16;
+
+            //------------------------------------------------------------------------------
+            
+            function showHelp(help) {
+              document.getElementById('help').innerHTML = help;
+            }
+
+            function makeHelpCallback(help) {
+              return function() {
+                showHelp(help);
+              };
+            }
+
+            function setupHelp() {
+              var helpText = [
+                  {'id': 'email', 'help': 'Your e-mail address'},
+                  {'id': 'name', 'help': 'Your full name'},
+                  {'id': 'age', 'help': 'Your age (you must be over 16)'}
+                ];
+
+              for (var i = 0; i < helpText.length; i++) {
+                var item = helpText[i];
+                document.getElementById(item.id).onfocus = makeHelpCallback(item.help);
+              }
+            }
+
+            setupHelp();
+
+            //------------------------------------------------------------------------------
+
+            function MyObject(name, message) {
+              console.log('this->',this);
+              this.name = name.toString();
+              this.message = message.toString();
+
+              this.getName = function() {
+                return this.name;
+              };
+
+              this.getMessage = function() {
+                return this.message;
+              };
+            }
+
+            var myObj = new MyObject('Jane', 'How are you');
+            var myAntObj = new MyObject('Kate', 'Where are you');
+
+            console.log('myObj->',myObj);
+            console.log('myAntObj->',myAntObj);
+
+            document.getElementById('myDiv').innerHTML = myObj.getMessage() +' '+ myObj.getName();
+            document.getElementById('myAntDiv').innerHTML = myAntObj.getMessage() +' '+ myAntObj.getName();
+        </script>
+    </body>
+</html>

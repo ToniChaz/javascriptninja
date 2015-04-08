@@ -15,6 +15,7 @@
         <h1>JavaScript Ninja</h1>
         <nav>
             <input type="button" value="Extras" onClick="document.location='extras.html';return false;" />
+            <input type="button" value="Closures" onClick="document.location='closures.html';return false;" />
             <input type="button" value="Asynchronous simple test" onClick="asynchronousSimpleTest()">
             <input type="button" value="Call functions" onClick="callFunctions()">
             <input type="button" value="Apply & Call" onClick="applyCall()">
@@ -22,7 +23,8 @@
             <input type="button" value="Anonymous function" onClick="anonymousFunction()">
             <input type="button" value="Add method" onClick="overload()">
 			<input type="button" value="Clicked Button" onClick="clickedButton()">
-			<input type="button" value="JS Class" onClick="JSClass()">
+            <input type="button" value="JS Class" onClick="JSClass()">
+			<input type="button" value="Count execute time" onClick="openPrompt()">
             <input type="button" value="Clear" id="clear"/>
         </nav>
         <h2 id="testTitle"></h2>
@@ -75,13 +77,17 @@
             var countExecuteTime = function(fn, maxCount){
                 var start = new Date().getTime();
 
-                for (var i = 0; i < maxCount; n++){
+                for (var i = 0; i < maxCount; i++){
                     fn();
                 } 
 
-                var elapsed = new Date.getTime() - start;
+                var elapsed = new Date().getTime() - start;
 
-                assert(true, "Measured time: " + elapsed);
+                assert(true, "Measured time: " + elapsed + "ms");
+            };
+            function openPrompt(){
+                var maxCount = prompt("Time to execute JSClass", maxCount);
+                countExecuteTime(JSClass, maxCount);
             };
         </script>       
     </body>
