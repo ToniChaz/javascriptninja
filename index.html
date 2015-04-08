@@ -12,6 +12,7 @@
     <body>
         <h1>JavaScript Ninja</h1>
         <nav>
+            <input type="button" value="Extras" onClick="document.location='extras.html';return false;" />
             <input type="button" value="Asynchronous simple test" onClick="asynchronousSimpleTest()">
             <input type="button" value="Call functions" onClick="callFunctions()">
             <input type="button" value="Apply & Call" onClick="applyCall()">
@@ -66,6 +67,18 @@
                     results.innerHTML = "";
                 };
             })();
-        </script>  
+
+            var countExecuteTime = function(fn, maxCount){
+                var start = new Date().getTime();
+
+                for (var i = 0; i < maxCount; n++){
+                    fn();
+                } 
+
+                var elapsed = new Date.getTime() - start;
+
+                assert(true, "Measured time: " + elapsed);
+            };
+        </script>       
     </body>
 </html>
