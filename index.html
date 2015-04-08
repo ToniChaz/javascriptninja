@@ -8,6 +8,8 @@
         <script type="text/javascript" src="js/chart-3.js"></script>
         <script type="text/javascript" src="js/chart-4-1.js"></script>
         <script type="text/javascript" src="js/chart-4-15.js"></script>
+        <script type="text/javascript" src="js/chart-5-8.js"></script>
+        <script type="text/javascript" src="js/chart-6-20.js"></script>
     </head>
     <body>
         <h1>JavaScript Ninja</h1>
@@ -19,6 +21,8 @@
             <input type="button" value="For each" onClick="forEach()">
             <input type="button" value="Anonymous function" onClick="anonymousFunction()">
             <input type="button" value="Add method" onClick="overload()">
+			<input type="button" value="Clicked Button" onClick="clickedButton()">
+			<input type="button" value="JS Class" onClick="JSClass()">
             <input type="button" value="Clear" id="clear"/>
         </nav>
         <h2 id="testTitle"></h2>
@@ -30,7 +34,7 @@
                 this.test = function(name, fn) {
                     queue.push(function() {
                         results = document.getElementById("results");
-                        results = assert(true, name).appendChild(
+                        results = this.assert(true, name).appendChild(
                                 document.createElement("ul"));
                         fn();
                     });
@@ -47,7 +51,7 @@
                     if (!paused && queue.length) {
                         queue.shift()();
                         if (!paused) {
-                            resume();
+                            this.resume();
                         }
                     }
                 }
@@ -63,8 +67,8 @@
                 };
                 var clear = document.getElementById("clear");
                 clear.onclick = function() {
-                    var results = document.getElementById("results");
-                    results.innerHTML = "";
+                    console.log('reload');
+                    window.location.reload();
                 };
             })();
 
