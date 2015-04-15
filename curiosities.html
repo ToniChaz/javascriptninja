@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Curiosities</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+    </head>
+    <body>
+        <h1>JavaScript Curiosities</h1>
+        <nav>
+            <input type="button" value="Index" onClick="document.location='index.html';return false;" />
+        </nav>
+        <p>Floating point precision:</p>
+        <pre>
+        0.1 + 0.2;
+        0.1 + 0.2 == 0.3;
+        </pre>
+        <b>Result:</b>
+        <i id="result1"></i>
+
+        <p>Palinfrome:</p>
+        <pre>
+        function isPalindrome(str){
+            str.replace(/\W/g, '').toLowerCase();
+            return (str = str.split('').reverse().join(''));
+        }
+        isPalindrome("level");
+        isPalindrome("levels");
+        isPalindrome("A car, a man, a maraca");
+        </pre>
+        <b>Result:</b>
+        <i id="result2"></i>
+        
+        <p>Sum method:</p>
+        <pre>
+        function sum(x){
+            if(arguments.length == 2){
+                return arguments[0] + arguments[1];
+            }else{
+                return function(y){ return x + y };
+            }
+        }
+        sum(2,3);
+        sum(2)(3);
+        </pre>
+        <b>Result:</b>
+        <i id="result3"></i>
+
+        <p>Events inside the loop:</p>
+        <p>Bad way:</p>
+        <pre>
+        for (var i = 0; i < 5; i++) {
+          var btn = document.createElement('button');
+          btn.appendChild(document.createTextNode('Button ' + i));
+          btn.addEventListener('click', function() {
+                console.log(i);
+          });
+          document.getElementById('result4').appendChild(btn);
+        }
+        </pre>
+        <b>Result:</b>
+        <i id="result4"></i>
+        <p>Good way:</p>
+        <pre>
+        for (var i = 0; i < 5; i++) {
+          var btn = document.createElement('button');
+          btn.appendChild(document.createTextNode('Button ' + i));
+          btn.addEventListener('click', (function(i) {
+                return function(){ console.log(i); };
+          })(i));
+          document.getElementById('result5').appendChild(btn);
+        }
+        </pre>
+        <b>Result:</b>
+        <i id="result5"></i>
+        <script>
+        document.getElementById('result1').innerHTML = (0.1 + 0.2) + ' => ' + (0.1 + 0.2 == 0.3);
+        
+        function isPalindrome(str){
+             str = str.replace(/\W/g, '').toLowerCase();
+            console.log(str);
+            return (str == str.split('').reverse().join(''));
+        }
+        document.getElementById('result2').innerHTML = 'level is palidrome: ' + isPalindrome("level") + '<br/>' +
+                                                    'levels is palidrome: ' + isPalindrome("levels") + '<br/>' +
+                                                    'A car, a man, a maraca is palidrome: ' + isPalindrome("A car, a man, a maraca");
+
+        function sum(x){
+            if(arguments.length == 2){
+                return arguments[0] + arguments[1];
+            }else{
+                return function(y){ return x + y };
+            }
+        }
+        document.getElementById('result3').innerHTML = 'sum(2,3): ' + sum(2,3) + ', ' +
+                                                       'sum(2)(3): ' + sum(2)(3);
+
+        for (var i = 0; i < 5; i++) {
+          var btn = document.createElement('button');
+          btn.appendChild(document.createTextNode('Button ' + i));
+          btn.addEventListener('click', function() {
+                console.log(i);
+          });
+          document.getElementById('result4').appendChild(btn);
+        }
+        for (var i = 0; i < 5; i++) {
+          var btn = document.createElement('button');
+          btn.appendChild(document.createTextNode('Button ' + i));
+          btn.addEventListener('click', (function(i) {
+                return function(){ console.log(i); };
+          })(i));
+          document.getElementById('result5').appendChild(btn);
+        }
+        </script>
+    </body>
+</html>
