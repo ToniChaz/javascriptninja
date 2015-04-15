@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Prototype</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">        
+    </head>
+    <body>
+        <h1>JavaScript Prototype</h1>
+        <nav>
+            <input type="button" value="Index" onClick="document.location='index.html';return false;" />
+        </nav>
+        <h2>Use prototype:</h2>
+        <pre>
+        function MyFunction(){};
+
+        MyFunction.prototype.childFunction = function(){
+          return 'I am a function and i exist';
+        };
+
+        var myFunction = new MyFunction();
+
+        myFunction.childFunction();
+        </pre>
+        <b>Result:</b>
+        <i id="result1"></i>
+        <h2>Not use prototype:</h2>
+        <pre>
+        function MyAntFucntion(){};
+
+        MyAntFucntion.childFunction = function(){
+          return 'I am a function and i exist';
+        };
+        
+        var myAntFunction = new MyAntFucntion();
+
+        myAntFunction.childFunction();
+        </pre>
+        <b>Result:</b>
+        <i id="result2"></i>
+        <script>
+        function MyFunction(){};
+        MyFunction.prototype.childFunction = function(){
+          return 'I am a function and i exist';
+        };
+
+        var myFunction = new MyFunction();
+        document.getElementById('result1').innerHTML = myFunction.childFunction();
+
+        function MyAntFucntion(){};
+        MyAntFucntion.childFunction = function(){
+          return 'I am a function and i exist';
+        };
+        
+        var myAntFunction = new MyAntFucntion();
+        try {
+          myAntFunction.childFunction();
+        } catch(error){
+          document.getElementById('result2').innerHTML = error.message;
+        }
+        
+           
+        </script>
+    </body>
+</html>

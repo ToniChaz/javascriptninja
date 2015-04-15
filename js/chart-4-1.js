@@ -13,12 +13,12 @@ var anonymousFunction = function() {
 
     ninja.shout();
 
+    // Force window onload event for this case:
+    var evt = document.createEvent('Event');  
+    evt.initEvent('load', false, false);  
+    window.dispatchEvent(evt);
+
     setTimeout(function() {
         assert(true, "Forever!");
     }, 500);
-};
-
-// Recursive functions
-var recursiveFunctions= function(){
-    
 };
