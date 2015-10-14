@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>JavaScript Closures</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <link rel="stylesheet" href="css/style.css">    
+    </head>
+    <body>
+        <h1>JavaScript Events</h1>
+        <nav>
+            <input type="button" value="Index" onClick="document.location='index.html';return false;" />            
+        </nav>
+		<hr>
+        <div title="Click me">Div number 1</div>
+        <div title="but only once">Div number 2</div>
+        <div title="Ninja Power">Div Ninja Power</div>
+        <div title="Secrets of Ninja">Secrets of Ninja</div>
+        <hr>
+ 		<h2 id="testTitle"></h2>
+        <ul id="results"></ul>
+        <script>
+    	// test abd assert
+        (function() {
+       		var queue = [], paused = false, results = document.getElementById("results");
+            this.test = function(name, fn) {
+                queue.push(function() {
+                    results = document.getElementById("results");
+                    results = this.assert(true, name).appendChild(
+                            document.createElement("ul"));
+                    fn();
+                });
+                runTest();
+            };
+            this.pause = function() {
+                paused = true;
+            };
+            this.resume = function() {
+                paused = false;
+                setTimeout(runTest, 1);
+            };
+            function runTest() {
+                if (!paused && queue.length) {
+                    queue.shift()();
+                    if (!paused) {
+                        this.resume();
+                    }
+                }
+            }
+            this.assert = function assert(value, desc) {
+                var li = document.createElement("li");
+                li.className = value ? "pass" : "fail";
+                li.appendChild(document.createTextNode(desc));
+                results.appendChild(li);
+                if (!value) {
+                    li.parentNode.parentNode.className = "fail";
+                }
+                return li;
+            };           
+        })();
+        
+
+        if(document.addEventListener){
+        	this.addEvent = function( elem, type, fn ){
+        		elem.addEventListener( type, fn, false);
+        		return fn;
+        	};
+        	this.removeEvent = function( elem, type, fn ){
+        		elem.removeEventListener( type, fn, false);
+        	};
+        }
+
+        addEvent(window, 'load', function(){
+        	var elems = document.getElementsByTagName('div');
+        	for (var i = 0; i < elems.length; i++) (function( elem ) {
+        		var handler = addEvent( elem, 'click', function(){
+        			this.style.backgroundColor = this.style.backgroundColor === '' ? 'green' : '';
+        			removeEvent( elem, 'click', handler);
+        		});
+        	}) (elems[i]);
+        });
+
+        function fixEvent( event ){
+        	function returnTrue () { return true; }
+        	function returnFalse () { return false; }
+
+        	if( !event || !event.stopPropagation) {
+        		var old = event || window.event;
+
+        		event = {};
+        		for (var prop in old){
+        			event[prop] = old[prop];
+        		}
+
+        		if ( !event.target ){
+        			event.target = event.srcElement || document;
+        		}
+
+        		event.relatedTarget = event.fromElement === event.target ? event.ToElement : event.fromElement;
+
+        		event.preventDefault = function () {
+        			event.returnValue = false;
+        			event.isDefaultPrevented = returnTrue;
+        		};
+
+        		event.isDefaultPrevented = returnFalse;
+
+        		event.stopPropagation = function () {
+        			event.cancelBubble = true;
+        			event.isPropagationStopped = returnTrue;
+        		};
+
+        		event.isPropagationStopped = returnFalse;
+
+        		event.stopImmediatePropagation = function () {
+        			this.isImmediatePropagationStopped = returnTrue;
+        			this.stopPropagation;
+        		};
+
+        		event.isImmediatePropagationStopped = returnFalse;
+
+        		if ( event.clientX !== null ){
+        			var doc = document.documentElement, 
+        				body = document.body;
+
+        			event.pageX = event.clientX 
+        			+ ( doc && doc.scrollLeft || body && body.scrollLeft || 0 )
+        			- ( doc && doc.clientLeft || body && body.clientLeft || 0 );
+
+        			event.pageY = event.clientY 
+        			+ ( doc && doc.scrollTop || body && body.scrollTop || 0 )
+        			- ( doc && doc.clientTop || body && body.clientTop || 0 );
+        		}
+
+        		event.which = event.charCode || event.KeyCode;
+
+        		// 0 left, 1 center, 2 right
+        		if ( event.button !== null ){
+        			event.button = ( event.button & 1 ? 0 : (event.button & 4 ? 1 : (event.button & 2 ? 2 : 0 )));
+        		} 
+        	}
+        	return event;
+        }
+
+        (function () {
+        	var cache = {};
+        	guidCounter = 1,
+        	expando = 'data' + ( new Date ).getTime();
+        	this.getData = function ( elem ) {
+        		var guid = elem[expando];
+        		if ( !guid ) {
+        			guid = elem[expando] = guidCounter++;
+        			cache[guid] = {};
+        		}
+        		console.log(cache[guid])
+        		return cache[guid];
+        	};
+        	this.removeData = function ( elem ) {
+        		var guid = elem[expando];
+        		if ( !guid ) return false;
+        		delete cache[guid];
+        		try {
+        			delete elem[expando];
+        		} catch ( e ) {
+        			if ( elem.removeAttribute) {
+        				elem.removeAttribute(expando);
+        			}
+        		}
+        	}
+        })();
+
+        var elems = document.getElementsByTagName('div');
+
+        for (var n = 0; n < elems.length; n++) {
+        	getData( elems[n] ).ninja = elems[n].title;
+        };
+
+        for (var n = 0; n < elems.length; n++){
+        	assert( getData( elems[n] ).ninja === elems[n].title,
+        		'Storred data is ' + getData( elems[n] ).ninja );
+        }
+
+        for (var n = 0; n < elems.length; n++){
+        	removeData( elems[n] );
+        	assert( getData( elems[n] ).ninja === undefined,
+        		'Storred data has been destroyed' );
+        }
+
+        </script>
+    </body>
+</html>
